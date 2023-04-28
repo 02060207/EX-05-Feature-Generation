@@ -4,11 +4,12 @@
 ## AIM
 To read the given data and perform Feature Generation process and save the data to a file. 
 
-# Explanation
+## Explanation
 Feature Generation (also known as feature construction, feature extraction or feature engineering) is the process of transforming features into new features that better relate to the target.
  
 
-# ALGORITHM
+## ALGORITHM
+
 ### STEP 1
 Read the given Data
 ### STEP 2
@@ -19,231 +20,126 @@ Apply Feature Generation techniques to all the feature of the data set
 Save the data to the file
 
 
-# CODE
+## CODE
+
+Name : SIVAKUMAR A
+Register Number : 212220043004
 ```
-Program Developed By : Ashwin Raaj.S
-Register Number : 212221230008
-```
-## Data.csv
-```
+**Feature Generation - Encoding Data.csv**
+
 import pandas as pd
-df=pd.read_csv("data.csv")
-df
-
-#feature generation
-import category_encoders as ce
-be=ce.BinaryEncoder()
-ndf=be.fit_transform(df["bin_1"])
-df["bin_1"] = be.fit_transform(df["bin_1"])
-ndf
-
-ndf2=be.fit_transform(df["bin_2"])
-df["bin_2"] = be.fit_transform(df["bin_2"])
-ndf2
-
-df1=df.copy()
-from sklearn.preprocessing import LabelEncoder,OrdinalEncoder,OneHotEncoder
-import category_encoders as ce
-be=ce.BinaryEncoder()
-ohe=OneHotEncoder(sparse=False)
-le=LabelEncoder()
-oe=OrdinalEncoder()
-
-
-df1["City"] = ohe.fit_transform(df1[["City"]])
-
-temp=['Cold','Warm','Hot','Very Hot']
-oe1=OrdinalEncoder(categories=[temp])
-df1['Ord_1'] = oe1.fit_transform(df1[["Ord_1"]])
-
-edu=['High School','Diploma','Bachelors','Masters','PhD']
-oe2=OrdinalEncoder(categories=[edu])
-df1['Ord_2']= oe2.fit_transform(df1[["Ord_2"]])
-df1
-
-#feature scaling
-from sklearn.preprocessing import MinMaxScaler
-sc=MinMaxScaler()
-df2=pd.DataFrame(sc.fit_transform(df1),columns=['id', 'bin_1', 'bin_2', 'City', 'Ord_1','Ord_2','Target'])
-df2
-
-from sklearn.preprocessing import StandardScaler
-sc1=StandardScaler()
-df3=pd.DataFrame(sc1.fit_transform(df1),columns=['id', 'bin_1', 'bin_2', 'City', 'Ord_1','Ord_2','Target'])
-df3
-
-from sklearn.preprocessing import MaxAbsScaler
-sc2=MaxAbsScaler()
-df4=pd.DataFrame(sc2.fit_transform(df1),columns=['id', 'bin_1', 'bin_2', 'City', 'Ord_1','Ord_2','Target'])
-df4
-
-from sklearn.preprocessing import RobustScaler
-sc3=RobustScaler()
-df5=pd.DataFrame(sc3.fit_transform(df1),columns=['id', 'bin_1', 'bin_2', 'City', 'Ord_1','Ord_2','Target'])
-df5
-```
-## Encoding.csv
-```
-import pandas as pd
-df=pd.read_csv("Encoding Data.csv")
-df
-
-#feature generation
-import category_encoders as ce
-be=ce.BinaryEncoder()
-ndf=be.fit_transform(df["bin_1"])
-df["bin_1"] = be.fit_transform(df["bin_1"])
-ndf
-
-ndf2=be.fit_transform(df["bin_2"])
-df["bin_2"] = be.fit_transform(df["bin_2"])
-ndf2
-
-df1=df.copy()
+import numpy as np
+import seaborn as sbn
+df = pd.read_csv("/content/Encoding Data.csv")
+df1 = df.copy()
+df1.head(5)
 from sklearn.preprocessing import LabelEncoder,OrdinalEncoder
-le=LabelEncoder()
-oe=OrdinalEncoder()
-
-df1["nom_0"] = oe.fit_transform(df1[["nom_0"]])
-temp=['Cold','Warm','Hot']
-oe2=OrdinalEncoder(categories=[temp])
-df1['ord_2'] = oe2.fit_transform(df1[['ord_2']])
-
-df1
-
-#feature scaling
-from sklearn.preprocessing import MinMaxScaler
-sc=MinMaxScaler()
-df0=pd.DataFrame(sc.fit_transform(df1),columns=['id', 'bin_1', 'bin_2', 'nom_0','ord_2'])
-df0
-
-from sklearn.preprocessing import StandardScaler
-sc1=StandardScaler()
-df2=pd.DataFrame(sc1.fit_transform(df1),columns=['id', 'bin_1', 'bin_2', 'nom_0','ord_2'])
-df2
-
-from sklearn.preprocessing import MaxAbsScaler
-sc2=MaxAbsScaler()
-df3=pd.DataFrame(sc2.fit_transform(df1),columns=['id', 'bin_1', 'bin_2', 'nom_0','ord_2'])
-df3
-
-from sklearn.preprocessing import RobustScaler
-sc3=RobustScaler()
-df4=pd.DataFrame(sc3.fit_transform(df1),columns=['id', 'bin_1', 'bin_2', 'nom_0','ord_2'])
-df4
-```
-## Titanic.csv
-```
-import pandas as pd
-df=pd.read_csv("titanic_dataset.csv")
-df
-
-#removing unwanted data
-df.drop("Name",axis=1,inplace=True)
-df.drop("Ticket",axis=1,inplace=True)
-df.drop("Cabin",axis=1,inplace=True)
-
-#data cleaning
-df.isnull().sum()
-
-df["Age"]=df["Age"].fillna(df["Age"].median())
-df["Embarked"]=df["Embarked"].fillna(df["Embarked"].mode()[0])
-
-df.isnull().sum()
-
-df
-
-#feature encoding
+climate = ['Cold','Warm','Hot']
+enc = OrdinalEncoder(categories = [climate])
+enc.fit_transform(df1[["ord_2"]])
+df1['Ord_2'] = enc.fit_transform(df1[["ord_2"]])
+df1.head(5)
+df2 = df1.copy()
+le = LabelEncoder()
+df2['Nom_0'] = le.fit_transform(df2[["nom_0"]])
+df2.head(5)
+df3 = df2.copy()
 from category_encoders import BinaryEncoder
-be=BinaryEncoder()
-df["Sex"]=be.fit_transform(df[["Sex"]])
-ndf=be.fit_transform(df["Sex"])
-ndf
+be = BinaryEncoder()
+data = be.fit_transform(df['bin_1'])
+df3  = pd.concat([df,data],axis=1)
+df3.head(5)
+df4 = df3.copy()
+from category_encoders import BinaryEncoder
+be1 = BinaryEncoder()
+newdata = be.fit_transform(df['bin_2'])
+df4  = pd.concat([df,newdata],axis=1)
+df4.head(5)
+df['ord_2'] = le.fit_transform(df['ord_2'])
+sbn.set(style ="darkgrid")
+sbn.countplot(df['ord_2'])
 
-df1=df.copy()
-from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
-embark=['S','C','Q']
-e1=OrdinalEncoder(categories=[embark])
-df1['Embarked'] = e1.fit_transform(df[['Embarked']])
-df1
 
-#feature scaling
-from sklearn.preprocessing import MinMaxScaler
-sc=MinMaxScaler()
-df2=pd.DataFrame(sc.fit_transform(df1),columns=['Passenger','Survived','Pclass','Sex','Age','SibSp','Parch','Fare','Embarked'])
-df2
+**Feature Generation - data.csv**
 
-from sklearn.preprocessing import StandardScaler
-sc1=StandardScaler()
-df3=pd.DataFrame(sc1.fit_transform(df1),columns=['Passenger','Survived','Pclass','Sex','Age','SibSp','Parch','Fare','Embarked'])
-df3
+import pandas as pd
+import numpy as np
+import seaborn as sbn
+df = pd.read_csv("/content/data.csv")
+df.head(5)
+df.info()
+df.isnull().sum()
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+df['Ord_2'] = le.fit_transform(df['Ord_2'])
+sbn.set(style ="darkgrid")
+sbn.countplot(df['Ord_2'])
+from sklearn.preprocessing import OneHotEncoder
+enc = OneHotEncoder()
+enc = enc.fit_transform(df[['City']]).toarray()
+encoded_colm = pd.DataFrame(enc)
+df = pd.concat([df, encoded_colm], axis=1)
+df = df.drop(['City'], axis=1)
+df.head(10)
+df = pd.get_dummies(df, prefix=['Ord_2'], columns=['Ord_2'])
+df.head(10)
+df = pd.get_dummies(df, prefix=['Ord_1'], columns=['Ord_1'])
+df.head(10)
 
-from sklearn.preprocessing import MaxAbsScaler
-sc2=MaxAbsScaler()
-df4=pd.DataFrame(sc2.fit_transform(df1),columns=['Passenger','Survived','Pclass','Sex','Age','SibSp','Parch','Fare','Embarked'])
-df4
 
-from sklearn.preprocessing import RobustScaler
-sc3=RobustScaler()
-df5=pd.DataFrame(sc3.fit_transform(df1),columns=['Passenger','Survived','Pclass','Sex','Age','SibSp','Parch','Fare','Embarked'])
-df5
+**Feature Generation - titanic_dataset.csv**
+
+import pandas as pd
+import numpy as np
+import seaborn as sbn
+df = pd.read_csv("/content/titanic_dataset.csv")
+df.head(5)
+df.info()
+df.isnull().sum()
+df['Age']=df['Age'] . fillna(df['Age'].mean())
+df['Cabin']=df['Cabin']. fillna(df['Cabin']. mode() [0])
+df['Embarked']=df['Embarked'] . fillna(df['Embarked'].mode( )[0])
+df.isnull().sum()
+from sklearn.preprocessing import LabelEncoder
+lc = LabelEncoder()
+df['Sex'] = lc.fit_transform(df['Sex'])
+sbn.set(style ="darkgrid")
+sbn.countplot(df['Sex'])
+from sklearn.preprocessing import OneHotEncoder
+enc= OneHotEncoder()
+enc= enc.fit_transform(df[['Name']]).toarray()
+encoded_colm = pd.DataFrame(enc)
+df= pd.concat([df, encoded_colm], axis=1)
+df= df.drop(['Name'], axis=1)
+df.head(10)
+df = pd.get_dummies(df, prefix=['Ticket'] ,columns=['Ticket'])
+df.head(10)
+df = pd.get_dummies(df, prefix=['Embarked'] ,columns=['Embarked'])
+df.head(10)
+
 ```
 
-# OUTPUT
-# Data.csv:
-## Initial Dataset:
-![output](ss1.png)
-## Binary Encoding:
-![output](ss2.png)
-![output](ss3.png)
-## Encoded Dataset:
-![output](ss4.png)
-## Data Scaling using MinMaxScaler:
-![output](ss5.png)
-## Data Scaling using StandardScaler:
-![output](ss6.png)
-## Data Scaling using MaxAbsScaler:
-![output](ss7.png)
-## Data Scaling using RobustScaler:
-![output](ss8.png)
-# Encoding.csv :
-## Initial Dataset:
-![output](ss9.png)
-## Binary Encoding:
-![output](ss10.png)
-![output](ss11.png)
-## Encoded Dataset:
-![output](ss12.png)
-## Data Scaling using MinMaxScaler:
-![output](ss13.png)
-## Data Scaling using StandardScaler:
-![output](ss14.png)
-## Data Scaling using MaxAbsScaler:
-![output](ss15.png)
-## Data Scaling using RobustScaler:
-![output](ss16.png)
-# Titanic.csv :
-## Initial Dataset:
-![output](ss17.png)
-## Data cleaning before encoding:
-![output](ss18.png)
-![output](ss19.png)
-![output](ss20.png)
-## Cleaned Dataset:
-![output](ss21.png)
-## Binary Encoding:
-![output](ss22.png)
-## Encoded Dataset:
-![output](ss23.png)
-## Data Scaling using MinMaxScaler:
-![output](ss24.png)
-## Data Scaling using StandardScaler:
-![output](ss25.png)
-## Data Scaling using MaxAbsScaler:
-![output](ss26.png)
-## Data Scaling using RobustScaler:
-![output](ss27.png)
+## OUPUT
 
-# RESULT:
+### Feature Generation - Encoding Data.csv
 
-Feature Generation process and Feature Scaling process is applied to the given data frames sucessfully.
+![image](https://user-images.githubusercontent.com/119560261/232685501-6b3af4df-8ed6-44de-b4f8-5fa81dfecea4.png)
+![image](https://user-images.githubusercontent.com/119560261/232685724-36b05934-b9c3-404c-aa43-8f5bcde8955c.png)
+![image](https://user-images.githubusercontent.com/119560261/232685803-85e56ee9-4889-4f9a-90a7-e374a8de8f47.png)
+
+### Feature Generation - data.csv
+
+![image](https://user-images.githubusercontent.com/119560261/232686446-3f1cf39b-565d-4f8f-9fe0-4b2c0f0abff3.png)
+![image](https://user-images.githubusercontent.com/119560261/232686516-d4a831d0-ed70-4415-9eb2-4d0a2e10f1bf.png)
+![image](https://user-images.githubusercontent.com/119560261/232686666-1eadb458-c5a1-4e85-8a21-6a371ae50936.png)
+![image](https://user-images.githubusercontent.com/119560261/232686811-a8c4a8b7-2b5b-4271-8f9b-e67ca185d424.png)
+
+### Feature Generation - titanic_dataset.csv
+
+![image](https://user-images.githubusercontent.com/119560261/232686975-9bbd1a8f-57da-404c-a521-bffa08761bd6.png)
+![image](https://user-images.githubusercontent.com/119560261/232687057-f7298af2-da33-44ed-899f-e07fd034d296.png)
+![image](https://user-images.githubusercontent.com/119560261/232687117-79c52972-7d28-479a-88ae-e845eeaffe96.png)
+![image](https://user-images.githubusercontent.com/119560261/232687286-d51127f2-2409-4071-8591-92fe152625ff.png)
+
+## RESULT:
+Thus the Feature Generation for the given datasets had been executed successfully
